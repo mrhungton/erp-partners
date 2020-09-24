@@ -1,0 +1,98 @@
+<%= form_for([erp_partners, :backend, partner], html: {multipart: true}) do |f| %>
+    <div class="form-body">
+        <div class="portlet light bordered">
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-2">
+                        <h4 class="text-center">Hình ảnh/Logo</h4>
+                        <%= erp_form_control('image', {
+                            img_src: partner.image_url.small,
+                            name: 'partner[image_url]',
+                            width: 150,
+                            height: 150
+                        }) %>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <%= erp_form_control("text", {
+                                    name: 'partner[name]',
+                                    value: partner.name,                   
+                                    label: t('.name'),
+                                    placeholder: t('.enter_name'),
+                                    required: true,
+                                    errors: partner.errors.full_messages_for(:name)
+                                }) %>
+                            </div>
+                            <div class="col-md-6">
+                                <%= erp_form_control("text", {
+                                    name: 'partner[website]',
+                                    value: partner.website,                   
+                                    label: t('.website'),
+                                    placeholder: t('.enter_website')
+                                }) %>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <%= erp_form_control("dataselect", {
+                                    name: 'partner[country_id]',
+                                    value: partner.country_id,
+                                    text: partner.country_name,
+                                    placeholder: t('.choose_country'),
+                                    label: t('.country'),
+                                    url: erp_areas.dataselect_backend_countries_path(format: 'json')
+                                }) %>
+                            </div>
+                            <div class="col-md-3">
+                                <%= erp_form_control("dataselect", {
+                                    name: 'partner[state_id]',
+                                    value: partner.state_id,
+                                    text: partner.state_name,
+                                    placeholder: t('.choose_state'),
+                                    label: t('.state'),
+                                    url: erp_areas.dataselect_backend_states_path(format: 'json'),
+                                    parent_control: "input[name='partner[country_id]']",
+                                    parent_id: "country_id"
+                                }) %>
+                            </div>
+                            <div class="col-md-3">
+                                <%= erp_form_control("dataselect", {
+                                    name: 'partner[district_id]',
+                                    value: partner.district_id,
+                                    text: partner.district_name,
+                                    placeholder: t('.choose_district'),
+                                    label: t('.district'),
+                                    url: erp_areas.dataselect_backend_districts_path(format: 'json'),
+                                    parent_control: "input[name='partner[state_id]']",
+                                    parent_id: "state_id"
+                                }) %>
+                            </div>
+                            <div class="col-md-3">
+                                <%= erp_form_control("text", {
+                                    name: 'partner[address]',
+                                    value: partner.address,
+                                    label: t('.address'),
+                                    placeholder: t('.enter_address')
+                                }) %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%= erp_form_control("editor", {
+                    name: 'partner[short_description]',
+                    value: partner.short_description,                   
+                    label: t('.short_description'),
+                    type: "tiny"
+                }) %>
+            </div>
+        </div>
+    </div>
+    <%= erp_component('button/save', {
+        text: t('submit')
+    }) %>
+    <%= erp_component('button/cancel', {
+        text: t('cancel'),
+        href: erp_partners.backend_partners_path
+    }) %>
+<% end %>
